@@ -1,56 +1,103 @@
 package utilities;
 
 
-import io.cucumber.datatable.DataTable;
 import io.restassured.response.Response;
-import org.json.simple.JSONObject;
+import io.restassured.specification.RequestSpecification;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.junit.Assert;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
 public class Utils extends ServiceConstants {
 
-    private static Response response;
-    private static String descriptionField;
-    private static boolean publicField;
+    static Response response;
+    static JSONObject gistsRequestObject = new JSONObject();
+    static ArrayList<String> gistIds;
+    static String randomGistId;
 
     public void setGistDescription(String fieldValue) {
-        descriptionField = fieldValue;
+        gistsRequestObject.put("description", fieldValue);
     }
 
     public void setGistPublicField(boolean fieldValue) {
-        publicField = fieldValue;
+        gistsRequestObject.put("public", fieldValue);
     }
 
-    public void createGist(DataTable table) {
-        JSONObject fileContent = new JSONObject();
+    public void formRequestBody(Map<String, String> gistFilesAndContent) {
         JSONObject files = new JSONObject();
-        JSONObject requestParam = new JSONObject();
-        for (int i = 1; i < table.height(); i++) {
-            fileContent.put("content", table.row(i).get(1));
-        }
-        for (int i = 1; i < table.height(); i++) {
-            files.put(table.row(i).get(0), fileContent);
-        }
+        gistFilesAndContent.forEach((k, v) -> {
+            JSONObject fileContent = new JSONObject();
+            fileContent.put("content", v);
+            files.put(k, fileContent);
+        });
+        gistsRequestObject.put("files", files);
+    }
 
-        requestParam.put("description", descriptionField);
-        requestParam.put("public", publicField);
-        requestParam.put("files", files);
-        System.out.println(requestParam.toJSONString());
-        response = given()
+    public RequestSpecification formRequestSpec() {
+        return given()
                 .header("Authorization", "token " + OAUTH2_TOKEN)
                 .contentType("application/json")
-                .body(requestParam.toJSONString())
-                .post();
+                .body(gistsRequestObject.toString());
+    }
 
-        response.prettyPrint();
+    public void getRandomGistID() {
+        gistIds = given()
+                .get("users/soorajs95/gists").path("id");
+        int index = (int) (Math.random() * gistIds.size());
+        randomGistId = gistIds.get(index);
+    }
+
+    public void createGist(Map<String, String> gistFilesAndContent) {
+        formRequestBody(gistFilesAndContent);
+        response = formRequestSpec()
+                .post("gists");
+    }
+
+    public void updateGist(Map<String, String> gistFilesAndContent) {
+        formRequestBody(gistFilesAndContent);
+        response = formRequestSpec()
+                .patch("gists/" + randomGistId);
+    }
+
+    public void deleteGist() {
+        response = given()
+                .header("Authorization", "token " + OAUTH2_TOKEN)
+                .delete("gists/" + randomGistId);
+    }
+
+    public void verifyResponseStatusIs200() {
+        Assert.assertEquals(HttpURLConnection.HTTP_OK, response.statusCode());
     }
 
     public void verifyResponseStatusIs201() {
         Assert.assertEquals(HttpURLConnection.HTTP_CREATED, response.statusCode());
     }
 
+    public void verifyResponseStatusIs204() {
+        Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.statusCode());
+    }
+
+    public void validateJSONSchema(String jsonSchemaName) {
+        try {
+            FileReader reader = new FileReader("src/test/resources/schema/" + jsonSchemaName + "Gist.json");
+            JSONObject jsonSchema = new JSONObject(
+                    new JSONTokener(reader));
+            JSONObject jsonSubject = new JSONObject(
+                    new JSONTokener(response.asInputStream()));
+            Schema schema = SchemaLoader.load(jsonSchema);
+            schema.validate(jsonSubject);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
