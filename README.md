@@ -20,7 +20,7 @@ Gists is a REST service automation testing framework using:
 **Maven Commands:**
 
 - Run the project - `mvn clean test`
-- Run tests with cucumber tags - `mvn test -Dcucumber.options="--tags @CRUD_Articles"`
+- Run tests with cucumber tags - `mvn test -Dcucumber.options="--tags @Create_Gist"`
 
 ## Reports
 
