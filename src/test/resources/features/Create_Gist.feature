@@ -8,4 +8,4 @@ Feature: Create_Gists
       | API_Testing.txt    | API testing is awesome   |
       | API_Automation.txt | API automation is faster |
     Then The response status should be 201 Created
-    And The response should match the create JSON schema
+    And The response should match the JSON schema

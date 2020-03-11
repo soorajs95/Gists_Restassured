@@ -86,9 +86,9 @@ public class Utils extends ServiceConstants {
         Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.statusCode());
     }
 
-    public void validateJSONSchema(String jsonSchemaName) {
+    public void validateJSONSchema() {
         try {
-            FileReader reader = new FileReader("src/test/resources/schema/" + jsonSchemaName + "Gist.json");
+            FileReader reader = new FileReader("src/test/resources/schema/createGist.json");
             JSONObject jsonSchema = new JSONObject(
                     new JSONTokener(reader));
             JSONObject jsonSubject = new JSONObject(

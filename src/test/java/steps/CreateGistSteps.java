@@ -47,10 +47,10 @@ public class CreateGistSteps extends Utils {
         }
     }
 
-    @And("The response should match the {} JSON schema")
-    public void the_response_should_match_the_json_schema(String jsonSchemaName) {
+    @And("The response should match the JSON schema")
+    public void the_response_should_match_the_json_schema() {
         try {
-            validateJSONSchema(jsonSchemaName);
+            validateJSONSchema();
         } catch (Exception e) {
             Assert.fail("ERROR: JSON schema not matched: " + e);
         }

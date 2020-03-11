@@ -9,4 +9,4 @@ Feature: Update_Gist
       | API_Testing.txt    | API testing is updated and awesome   |
       | API_Automation.txt | API automation is updated and faster |
     Then The response status should be 200 OK
-    And The response should match the update JSON schema
+    And The response should match the JSON schema
