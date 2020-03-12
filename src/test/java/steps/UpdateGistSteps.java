@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class UpdateGistSteps extends Utils {
 
-    @Given("I send a GET request with username {} for fetching random gist ID")
-    public void i_send_a_get_request_with_username_for_fetching_random_gist_id(String userName) {
+    @Given("I send a GET request for fetching random gist ID")
+    public void i_send_a_get_request_for_fetching_random_gist_id() {
         try {
-            getRandomGistID(userName);
+            getRandomGistID();
         } catch (Exception e) {
             Assert.fail("ERROR: Failed to fetch random gist ID: " + e);
         }

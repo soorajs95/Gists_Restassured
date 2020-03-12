@@ -53,9 +53,9 @@ public class Utils extends ServiceConstants {
                 .body(gistsRequestObject.toString());
     }
 
-    public void getRandomGistID(String userName) {
+    public void getRandomGistID() {
         ArrayList<String> gistIds = given()
-                .get("users/" + userName + "/gists").path("id");
+                .get("users/" + USER_NAME + "/gists").path("id");
         int index = (int) (Math.random() * gistIds.size());
         randomGistId = gistIds.get(index);
     }

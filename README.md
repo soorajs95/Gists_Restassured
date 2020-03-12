@@ -8,6 +8,10 @@ Gists is a REST service automation testing framework using:
 - [JSON Schema Validator](https://github.com/everit-org/json-schema) for JSON schema validation
 - [Cluecumber Report Maven Plugin](https://github.com/trivago/cluecumber-report-plugin) for Cucumber test reporting
 
+## Setting up authentication
+
+-In [ServiceConstants](/src/test/java/utilities/ServiceConstants.java) class update **USER_NAME** and **OAUTH2_TOKEN** 
+
 ## Approach
 
 - Using open source libraries and effective tools for automation testing

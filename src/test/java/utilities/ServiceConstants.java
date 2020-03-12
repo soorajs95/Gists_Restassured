@@ -4,6 +4,7 @@ public class ServiceConstants {
 
     public static final String BASE_URI = "https://api.github.com/";
     public static final String GISTS_URL = "/gists";
-    public static final String OAUTH2_TOKEN = "c847db5964e19c022d2aae0dafc0ebba38271f40";
+    public static final String USER_NAME = "";
+    public static final String OAUTH2_TOKEN = "";
 
 }
