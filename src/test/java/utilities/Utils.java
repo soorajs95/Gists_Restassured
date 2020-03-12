@@ -62,6 +62,19 @@ public class Utils extends ServiceConstants {
                 .post("gists");
     }
 
+    public void createGistWithoutFiles() {
+        response = formRequestSpec()
+                .post("gists");
+    }
+
+    public void createGistWithoutAuthentication(Map<String, String> gistFilesAndContent) {
+        formRequestBody(gistFilesAndContent);
+        response = given()
+                .contentType("application/json")
+                .body(gistsRequestObject.toString())
+                .post("gists");
+    }
+
     public void updateGist(Map<String, String> gistFilesAndContent) {
         formRequestBody(gistFilesAndContent);
         response = formRequestSpec()
@@ -84,6 +97,14 @@ public class Utils extends ServiceConstants {
 
     public void verifyResponseStatusIs204() {
         Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.statusCode());
+    }
+
+    public void verifyResponseStatusIs422() {
+        Assert.assertEquals(422, response.statusCode());
+    }
+
+    public void verifyResponseStatusIs401() {
+        Assert.assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, response.statusCode());
     }
 
     public void validateJSONSchema() {
