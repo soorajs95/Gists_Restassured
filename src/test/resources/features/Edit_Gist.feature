@@ -2,7 +2,7 @@
 Feature: Update_Gist
 
   Scenario: Update gist through API and verify the response
-    Given I send a GET request with user soorajs95 for fetching random gist ID
+    Given I send a GET request with username soorajs95 for fetching random gist ID
     And I set the gist description as API Testing Updating Examples
     And  I set gist public as true
     When I send a PATCH request for updating a gist with files
@@ -17,7 +17,7 @@ Feature: Update_Gist
       | API_Automation.txt |
 
   Scenario: Update gist without file through API and verify the response
-    Given I send a GET request with user soorajs95 for fetching random gist ID
+    Given I send a GET request with username soorajs95 for fetching random gist ID
     And I set the gist description as API Testing Updating Examples
     And  I set gist public as true
     When I send a PATCH request for updating a gist without any files

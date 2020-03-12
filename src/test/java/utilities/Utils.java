@@ -53,9 +53,9 @@ public class Utils extends ServiceConstants {
                 .body(gistsRequestObject.toString());
     }
 
-    public void getRandomGistID(String user) {
+    public void getRandomGistID(String userName) {
         ArrayList<String> gistIds = given()
-                .get("users/" + user + "/gists").path("id");
+                .get("users/" + userName + "/gists").path("id");
         int index = (int) (Math.random() * gistIds.size());
         randomGistId = gistIds.get(index);
     }
@@ -92,13 +92,13 @@ public class Utils extends ServiceConstants {
 
     public void verifyFilesCreated(List<String> fileNames) {
         for (String fileName : fileNames) {
-            Assert.assertTrue(response.path("files").toString().contains(fileName));
+            Assert.assertTrue("Filename not found in response body", response.path("files").toString().contains(fileName));
         }
     }
 
     public void verifyFilesDeleted(List<String> fileNames) {
         for (String fileName : fileNames) {
-            Assert.assertFalse(response.path("files").toString().contains(fileName));
+            Assert.assertFalse("Filename found in response body", response.path("files").toString().contains(fileName));
         }
     }
 
@@ -109,23 +109,23 @@ public class Utils extends ServiceConstants {
     }
 
     public void verifyResponseStatusIs200() {
-        Assert.assertEquals(HttpURLConnection.HTTP_OK, response.statusCode());
+        Assert.assertEquals("Status code did not match", HttpURLConnection.HTTP_OK, response.statusCode());
     }
 
     public void verifyResponseStatusIs201() {
-        Assert.assertEquals(HttpURLConnection.HTTP_CREATED, response.statusCode());
+        Assert.assertEquals("Status code did not match", HttpURLConnection.HTTP_CREATED, response.statusCode());
     }
 
     public void verifyResponseStatusIs204() {
-        Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.statusCode());
-    }
-
-    public void verifyResponseStatusIs422() {
-        Assert.assertEquals(422, response.statusCode());
+        Assert.assertEquals("Status code did not match", HttpURLConnection.HTTP_NO_CONTENT, response.statusCode());
     }
 
     public void verifyResponseStatusIs401() {
-        Assert.assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, response.statusCode());
+        Assert.assertEquals("Status code did not match", HttpURLConnection.HTTP_UNAUTHORIZED, response.statusCode());
+    }
+
+    public void verifyResponseStatusIs422() {
+        Assert.assertEquals("Status code did not match", 422, response.statusCode());
     }
 
     public void validateJSONSchema() {
