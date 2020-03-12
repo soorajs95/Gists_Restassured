@@ -20,7 +20,7 @@ public class CreateGistSteps extends Utils {
         }
     }
 
-    @And("I set public as {}")
+    @And("I set gist public as {}")
     public void i_set_public_as(boolean value) {
         try {
             setGistPublicField(value);
@@ -29,8 +29,8 @@ public class CreateGistSteps extends Utils {
         }
     }
 
-    @When("I send a POST request for creating a gist with below files")
-    public void i_send_a_POST_request_for_creating_a_gist_with_below_files(Map<String, String> gistFilesAndContent) {
+    @When("I send a POST request for creating a gist with files")
+    public void i_send_a_POST_request_for_creating_a_gist_with_files(Map<String, String> gistFilesAndContent) {
         try {
             createGist(gistFilesAndContent);
         } catch (Exception e) {
@@ -47,8 +47,8 @@ public class CreateGistSteps extends Utils {
         }
     }
 
-    @And("The response should match the JSON schema")
-    public void the_response_should_match_the_json_schema() {
+    @And("The response body should match the JSON schema")
+    public void the_response_body_should_match_the_json_schema() {
         try {
             validateJSONSchema();
         } catch (Exception e) {
@@ -74,8 +74,8 @@ public class CreateGistSteps extends Utils {
         }
     }
 
-    @When("I send a POST request without authentication for creating a gist with below files")
-    public void i_send_a_post_request_without_authentication_for_creating_a_gist_with_below_files(Map<String, String> gistFilesAndContent) {
+    @When("I send a POST request without authentication for creating a gist with files")
+    public void i_send_a_post_request_without_authentication_for_creating_a_gist_with_files(Map<String, String> gistFilesAndContent) {
         try {
             createGistWithoutAuthentication(gistFilesAndContent);
         } catch (Exception e) {

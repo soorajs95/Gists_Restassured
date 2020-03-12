@@ -13,8 +13,6 @@ Gists is a REST service automation testing framework using:
 - Using open source libraries and effective tools for automation testing
 - Using Cucumber BDD to easily handle data inside feature file and for easy understanding
 
-## Issues
-
 ## Executing Tests
 
 **Maven Commands:**
@@ -25,3 +23,5 @@ Gists is a REST service automation testing framework using:
 ## Reports
 
 Reports will be generated in `target/generated-reports/index.html` after running the tests using maven commands
+
+![Report](/images/Report_image.png)  

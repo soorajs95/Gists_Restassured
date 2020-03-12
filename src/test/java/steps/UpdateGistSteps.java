@@ -12,17 +12,17 @@ import java.util.Map;
 
 public class UpdateGistSteps extends Utils {
 
-    @Given("I send a GET request for fetching random gist ID")
-    public void i_send_a_get_request_for_fetching_random_gist_id() {
+    @Given("I send a GET request with user {} for fetching random gist ID")
+    public void i_send_a_get_request_with_user_for_fetching_random_gist_id(String user) {
         try {
-            getRandomGistID();
+            getRandomGistID(user);
         } catch (Exception e) {
             Assert.fail("ERROR: Failed to fetch random gist ID: " + e);
         }
     }
 
-    @When("I send a PATCH request for updating a gist with below files")
-    public void i_send_a_patch_request_for_updating_a_gist_with_below_files(Map<String, String> gistFilesAndContent) {
+    @When("I send a PATCH request for updating a gist with files")
+    public void i_send_a_patch_request_for_updating_a_gist_with_files(Map<String, String> gistFilesAndContent) {
         try {
             updateGist(gistFilesAndContent);
         } catch (Exception e) {

@@ -21,9 +21,8 @@ import static io.restassured.RestAssured.given;
 public class Utils extends ServiceConstants {
 
     private static Response response;
-    private static JSONObject gistsRequestObject = new JSONObject();
-    private static ArrayList<String> gistIds;
     private static String randomGistId;
+    public static JSONObject gistsRequestObject;
 
     public void setGistDescription(String fieldValue) {
         gistsRequestObject.put("description", fieldValue);
@@ -54,9 +53,9 @@ public class Utils extends ServiceConstants {
                 .body(gistsRequestObject.toString());
     }
 
-    public void getRandomGistID() {
-        gistIds = given()
-                .get("users/soorajs95/gists").path("id");
+    public void getRandomGistID(String user) {
+        ArrayList<String> gistIds = given()
+                .get("users/" + user + "/gists").path("id");
         int index = (int) (Math.random() * gistIds.size());
         randomGistId = gistIds.get(index);
     }
@@ -64,12 +63,12 @@ public class Utils extends ServiceConstants {
     public void createGist(Map<String, String> gistFilesAndContent) {
         formRequestBody(gistFilesAndContent);
         response = formRequestSpec()
-                .post("gists");
+                .post(GISTS_URL);
     }
 
     public void createGistWithoutFiles() {
         response = formRequestSpec()
-                .post("gists");
+                .post(GISTS_URL);
     }
 
     public void createGistWithoutAuthentication(Map<String, String> gistFilesAndContent) {
@@ -77,18 +76,18 @@ public class Utils extends ServiceConstants {
         response = given()
                 .contentType("application/json")
                 .body(gistsRequestObject.toString())
-                .post("gists");
+                .post(GISTS_URL);
     }
 
     public void updateGist(Map<String, String> gistFilesAndContent) {
         formRequestBody(gistFilesAndContent);
         response = formRequestSpec()
-                .patch("gists/" + randomGistId);
+                .patch(GISTS_URL + "/" + randomGistId);
     }
 
     public void updateGistWithoutFiles() {
         response = formRequestSpec()
-                .patch("gists/" + randomGistId);
+                .patch(GISTS_URL + "/" + randomGistId);
     }
 
     public void verifyFilesCreated(List<String> fileNames) {
@@ -106,7 +105,7 @@ public class Utils extends ServiceConstants {
     public void deleteGist() {
         response = given()
                 .header("Authorization", "token " + OAUTH2_TOKEN)
-                .delete("gists/" + randomGistId);
+                .delete(GISTS_URL + "/" + randomGistId);
     }
 
     public void verifyResponseStatusIs200() {
@@ -135,7 +134,7 @@ public class Utils extends ServiceConstants {
             JSONObject jsonSchema = new JSONObject(
                     new JSONTokener(reader));
             JSONObject jsonSubject = new JSONObject(
-                    new JSONTokener(response.asInputStream()));
+                    new JSONTokener(response.asString()));
             Schema schema = SchemaLoader.load(jsonSchema);
             schema.validate(jsonSubject);
         } catch (IOException e) {
