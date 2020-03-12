@@ -13,16 +13,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
 public class Utils extends ServiceConstants {
 
-    static Response response;
-    static JSONObject gistsRequestObject = new JSONObject();
-    static ArrayList<String> gistIds;
-    static String randomGistId;
+    private static Response response;
+    private static JSONObject gistsRequestObject = new JSONObject();
+    private static ArrayList<String> gistIds;
+    private static String randomGistId;
 
     public void setGistDescription(String fieldValue) {
         gistsRequestObject.put("description", fieldValue);
@@ -36,8 +37,12 @@ public class Utils extends ServiceConstants {
         JSONObject files = new JSONObject();
         gistFilesAndContent.forEach((k, v) -> {
             JSONObject fileContent = new JSONObject();
-            fileContent.put("content", v);
-            files.put(k, fileContent);
+            if (v.equalsIgnoreCase("null")) {
+                files.put(k, JSONObject.NULL);
+            } else {
+                fileContent.put("content", v);
+                files.put(k, fileContent);
+            }
         });
         gistsRequestObject.put("files", files);
     }
@@ -79,6 +84,23 @@ public class Utils extends ServiceConstants {
         formRequestBody(gistFilesAndContent);
         response = formRequestSpec()
                 .patch("gists/" + randomGistId);
+    }
+
+    public void updateGistWithoutFiles() {
+        response = formRequestSpec()
+                .patch("gists/" + randomGistId);
+    }
+
+    public void verifyFilesCreated(List<String> fileNames) {
+        for (String fileName : fileNames) {
+            Assert.assertTrue(response.path("files").toString().contains(fileName));
+        }
+    }
+
+    public void verifyFilesDeleted(List<String> fileNames) {
+        for (String fileName : fileNames) {
+            Assert.assertFalse(response.path("files").toString().contains(fileName));
+        }
     }
 
     public void deleteGist() {

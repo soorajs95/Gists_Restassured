@@ -1,11 +1,13 @@
 package steps;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import utilities.Utils;
 
+import java.util.List;
 import java.util.Map;
 
 public class UpdateGistSteps extends Utils {
@@ -37,4 +39,30 @@ public class UpdateGistSteps extends Utils {
         }
     }
 
+    @When("I send a PATCH request for updating a gist without any files")
+    public void i_send_a_patch_request_for_updating_a_gist_without_any_files() {
+        try {
+            updateGistWithoutFiles();
+        } catch (Exception e) {
+            Assert.fail("ERROR: Failed to send a post request without any files: " + e);
+        }
+    }
+
+    @And("The response should not have the files")
+    public void the_response_should_not_have_the_files(List<String> fileNames) {
+        try {
+            verifyFilesDeleted(fileNames);
+        } catch (Exception e) {
+            Assert.fail("ERROR: Failed to verify the file is deleted: " + e);
+        }
+    }
+
+    @And("The response should have the files")
+    public void the_response_should_have_the_files(List<String> fileNames) {
+        try {
+            verifyFilesCreated(fileNames);
+        } catch (Exception e) {
+            Assert.fail("ERROR: Failed to verify the file is created: " + e);
+        }
+    }
 }
