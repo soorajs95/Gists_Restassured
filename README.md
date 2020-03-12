@@ -1,6 +1,6 @@
-# Gists
+# Gists_Restassured
 
-Gists is a REST service automation testing framework using:
+Gists_Restassured is a REST service automation testing framework using:
 
 - [REST-assured](http://rest-assured.io/) library for REST service testing
 - [Cucumber JVM](https://cucumber.io/) Behavior-Driven Development tool
